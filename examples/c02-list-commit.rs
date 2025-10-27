@@ -10,8 +10,17 @@ const REMOTE_ORIGIN: &str = "https://github.com/CTFcrozone/xp-git2-test-repo.git
 fn main() -> Result<()> {
 	let repo = Repository::open(REPO_PATH)?;
 
-	let head = repo.head()?;
-	let commit = head.peel_to_commit()?;
+	// get for head
+	// let head = repo.head()?;
+	// let commit = head.peel_to_commit()?;
+
+	// get for specific remote branch
+	// let branch = repo.find_branch("origin/test-branch", git2::BranchType::Remote)?;
+	// let commit = branch.get().peel_to_commit()?;
+
+	// get for specific local branch
+	let branch = repo.find_branch("test-branch", git2::BranchType::Local)?;
+	let commit = branch.get().peel_to_commit()?;
 
 	let mut revwalk = repo.revwalk()?;
 
@@ -22,10 +31,10 @@ fn main() -> Result<()> {
 		let commit_id = commit_id?;
 		let commit = repo.find_commit(commit_id)?;
 		println!(
-			"->> COMMIT_ID: {} AUTHOR: {} SUMMARY: {}",
+			"->> COMMIT_ID: {} AUTHOR: {} SUMMARY: \"{}\"",
 			commit_id,
 			commit.author().name().unwrap_or("NONE"),
-			commit.summary().ok_or("NONE")?
+			commit.summary().unwrap_or("NONE")
 		)
 	}
 
