@@ -12,7 +12,7 @@ fn main() -> Result<()> {
 
 	let mut index = repo.index()?;
 
-	let paths: &[&str] = &["file.rs"];
+	let paths: &[&str] = &["commit_test.txt"];
 
 	for path in paths {
 		index.add_path(Path::new(path))?;
